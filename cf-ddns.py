@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 # Python CloudFlare-DDNS 自动更新脚本
 # by hjh
 #       ┏┓    ┏┓  + +
