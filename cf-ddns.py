@@ -93,7 +93,7 @@ for domain in config['domains']:
         try:
             print(
                 '咦？ "{0}" 的zone id不见了耶~嘿嘿'
-                '正在向CloudFlare获取'.format(domain['name']))
+                '，正在向CloudFlare获取'.format(domain['name']))
             zone_id_req = Request(base_url, headers=content_header)
             zone_id_resp = urlopen(zone_id_req)
             for d in json.loads(zone_id_resp.read().decode('utf-8'))['result']:
@@ -116,7 +116,7 @@ for domain in config['domains']:
         if not host['id']:
             print(
                 '咦？ "{0}" 的host id不见了耶~嘿嘿'
-                '正在向CloudFlare获取'.format(fqdn))
+                '，正在向CloudFlare获取'.format(fqdn))
             rec_id_req = Request(
                 base_url + domain['id'] + '/dns_records/',
                 headers=content_header)
