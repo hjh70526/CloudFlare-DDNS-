@@ -92,8 +92,8 @@ for domain in config['domains']:
     if not domain['id']:
         try:
             print(
-                '错误：zone id for "{0}" is missing. attempting to '
-                'get it from cloudflare...'.format(domain['name']))
+                '咦： "{0}" 的zone id不见了耶~嘿嘿'
+                '正在向CloudFlare获取'.format(domain['name']))
             zone_id_req = Request(base_url, headers=content_header)
             zone_id_resp = urlopen(zone_id_req)
             for d in json.loads(zone_id_resp.read().decode('utf-8'))['result']:
@@ -102,21 +102,21 @@ for domain in config['domains']:
                     print('* zone id for "{0}" is'
                           ' {1}'.format(domain['name'], domain['id']))
         except HTTPError as e:
-            print('错误：could not get zone id for: {0}'.format(domain['name']))
-            print('possible causes: wrong domain and/or auth credentials')
+            print('错误：无法向CLoudFlare获取zone id {0}'.format(domain['name']))
+            print('可能是你的cf-ddns.conf配置错误？也有可能是你的CloudFlare域名解析配置错误。。。')
             continue
 
     for host in domain['hosts']:
         fqdn = host['name'] + '.' + domain['name']
 
         if not host['name']:
-            print('错误：host name missing')
+            print('错误：没有找到解析记录，请检查你的CLoudFlare设置！')
             continue
 
         if not host['id']:
             print(
-                '* host id for "{0}" is missing. attempting'
-                ' to get it from cloudflare...'.format(fqdn))
+                ' "{0}" 的host id不见了耶~嘿嘿'
+                '正在向CloudFlare获取'.format(fqdn))
             rec_id_req = Request(
                 base_url + domain['id'] + '/dns_records/',
                 headers=content_header)
@@ -130,7 +130,7 @@ for domain in config['domains']:
 
         for t in host['types']:
             if t not in ('A', 'AAAA'):
-                print('* wrong or missing dns record type: {0}'.format(t))
+                print('错误：错误的域名解析记录类型，必须是A或AAAA，你的记录类型是: {0}'.format(t))
                 continue
             elif t == 'A':
                 if public_ipv4:
@@ -176,7 +176,7 @@ for domain in config['domains']:
                         print('更新成功 (type: {0}, fqdn: {1}'
                               ', ip: {2})'.format(t, fqdn, public_ip))
                 except (Exception, HTTPError) as e:
-                    print('* update failed (type: {0}, fqdn: {1}'
+                    print('哎？更新出错了，可能是网络问题？若多次出错，可能是你的CloudFlare API密钥错误哦！ (type: {0}, fqdn: {1}'
                           ', ip: {2})'.format(t, fqdn, public_ip))
 
 if update:
