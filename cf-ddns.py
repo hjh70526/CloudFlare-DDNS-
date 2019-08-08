@@ -92,14 +92,14 @@ for domain in config['domains']:
     if not domain['id']:
         try:
             print(
-                '咦： "{0}" 的zone id不见了耶~嘿嘿'
+                '咦？ "{0}" 的zone id不见了耶~嘿嘿'
                 '正在向CloudFlare获取'.format(domain['name']))
             zone_id_req = Request(base_url, headers=content_header)
             zone_id_resp = urlopen(zone_id_req)
             for d in json.loads(zone_id_resp.read().decode('utf-8'))['result']:
                 if domain['name'] == d['name']:
                     domain['id'] = d['id']
-                    print('* zone id for "{0}" is'
+                    print(' "{0}" 的zone id是'
                           ' {1}'.format(domain['name'], domain['id']))
         except HTTPError as e:
             print('错误：无法向CLoudFlare获取zone id {0}'.format(domain['name']))
@@ -115,7 +115,7 @@ for domain in config['domains']:
 
         if not host['id']:
             print(
-                ' "{0}" 的host id不见了耶~嘿嘿'
+                '咦？ "{0}" 的host id不见了耶~嘿嘿'
                 '正在向CloudFlare获取'.format(fqdn))
             rec_id_req = Request(
                 base_url + domain['id'] + '/dns_records/',
@@ -125,7 +125,7 @@ for domain in config['domains']:
             for h in parsed_host_ids['result']:
                 if fqdn == h['name']:
                     host['id'] = h['id']
-                    print('* host id for "{0}" is'
+                    print(' "{0}" 的host id是'
                           ' {1}'.format(fqdn, host['id']))
 
         for t in host['types']:
